@@ -29,7 +29,7 @@ fun TodoCard(modifier:Modifier = Modifier){
         Modifier
             .clip(RoundedCornerShape(8.dp))
             .background(Color.Black)
-            .padding(start = 4.dp, top = 5.dp)
+            .padding(start = 5.dp, top = 5.dp)
     ){
         Box(
             Modifier
