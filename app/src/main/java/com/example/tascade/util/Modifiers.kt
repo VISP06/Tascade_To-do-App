@@ -5,8 +5,9 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 
+//extension function which is called in the app composable to make background (apply dots)
 fun Modifier.halftoneBackground(
-    dotColor: Color = Color.Black.copy(alpha = 0.15f), // Adjust transparency here
+    dotColor: Color = Color.Black.copy(alpha = 0.15f),
     dotRadius: Float = 3f, // Size of the dot
     spacing: Float = 30f  // Distance between dots
 ) = this.drawBehind {

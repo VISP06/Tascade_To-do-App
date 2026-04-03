@@ -1,8 +1,10 @@
 package com.example.tascade.model
 
+import androidx.annotation.StringRes
+
 data class Todo(
     val id:Int,
-    val title:String,
+    @StringRes val title:Int,
     val desc:String,
     val priority:Int,
     val isCompleted:Boolean = false
