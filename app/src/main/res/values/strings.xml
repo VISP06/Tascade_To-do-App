@@ -1,6 +1,15 @@
 <resources>
     <string name="app_name">Tascade</string>
-    <string name="title_1">Buy Milk</string>
-    <string name="title_2">Finish fixing bug</string>
-    <string name="title_3">Gym at 6 PM</string>
+    <string name="title_1">Go to the supermarket and find shop named DairyDream Store</string>
+    <string name="title_2">The dropdown button is not working as expected</string>
+    <string name="title_3">It is not leg day :)</string>
+    <string name="title_4">Finish Android assignment before deadline</string>
+    <string name="title_5">Push latest changes to GitHub repo</string>
+    <string name="title_6">Watch Kotlin Coroutines tutorial</string>
+    <string name="title_7">Refactor UI code for better readability</string>
+    <string name="title_8">Prepare for upcoming MCQ exam</string>
+    <string name="title_9">Clean up unused resources in project</string>
+    <string name="title_10">Design new feature for todo app</string>
+    <string name="title_11">Fix bugs reported in last build</string>
+    <string name="title_12">Update README with project details</string>
 </resources>
