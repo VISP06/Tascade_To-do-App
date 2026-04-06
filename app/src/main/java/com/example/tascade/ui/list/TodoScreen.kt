@@ -14,10 +14,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LargeFloatingActionButton
 import androidx.compose.material3.Scaffold
@@ -26,22 +24,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tascade.R
+import com.example.tascade.TodoViewModel
 import com.example.tascade.model.Todo
 import com.example.tascade.ui.components.TodoCard
 import com.example.tascade.ui.theme.TascadeTheme
 import com.example.tascade.util.halftoneBackground
-import com.example.tascade.util.sampleTasks
 
-
+val vm = TodoViewModel()
 @Composable
 fun TodoApp(){
     Scaffold(
@@ -57,7 +53,7 @@ fun TodoApp(){
 
         ) {
 
-            TodoList(sampleTasks, contentPaddingValues =innerPadding)
+            TodoList(vm.todos, contentPaddingValues =innerPadding)
 
         }
     }
@@ -67,9 +63,12 @@ fun TodoApp(){
 fun TodoList(tasks:List<Todo>, modifier: Modifier = Modifier, contentPaddingValues: PaddingValues){
 
     LazyColumn(modifier = Modifier, contentPadding=contentPaddingValues) {
-        items(tasks){ sampleTask->
+        items(items = tasks, key = { task -> task.id }){ task->
             Spacer(Modifier.padding(8.dp))
-            TodoCard(sampleTask)
+            TodoCard(
+                task = task,
+                modifier = Modifier.animateItem()
+            )
         }
     }
 }
@@ -105,7 +104,7 @@ fun TodoFAB(modifier:Modifier = Modifier) {
             .offset(x = -4.dp, y = -4.dp)
     ) {
         LargeFloatingActionButton(
-            onClick = { },
+            onClick = { vm.addTodo()},
             shape = CircleShape,
             containerColor = Color(0xFF1A237E),
             modifier = Modifier.border(3.dp, Color.Black, shape = CircleShape)

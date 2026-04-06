@@ -13,4 +13,5 @@
     <string name="title_10">Design new feature for todo app</string>
     <string name="title_11">Fix bugs reported in last build</string>
     <string name="title_12">Update README with project details</string>
+    <string name="test_title">Dummy Task</string>
 </resources>

@@ -8,8 +8,8 @@ import androidx.compose.ui.graphics.Color
 //extension function which is called in the app composable to make background (apply dots)
 fun Modifier.halftoneBackground(
     dotColor: Color = Color.Black.copy(alpha = 0.15f),
-    dotRadius: Float = 3f, // Size of the dot
-    spacing: Float = 30f  // Distance between dots
+    dotRadius: Float = 3f, //Size of the dot
+    spacing: Float = 30f  //Distance between dots
 ) = this.drawBehind {
     val rows = (size.height / spacing).toInt()
     val cols = (size.width / spacing).toInt()
