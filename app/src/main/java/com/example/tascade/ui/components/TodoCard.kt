@@ -17,6 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.tascade.TodoViewModel
 import com.example.tascade.model.Todo
 import com.example.tascade.ui.theme.BebasNeue
 
@@ -39,7 +40,7 @@ fun TodoCard(task: Todo, modifier:Modifier = Modifier){
                 .padding(vertical = 16.dp) //replaced .size() allowing for bigger text to be placed
         ){
             Text(
-                text = stringResource(task.title), //requires only string resources?
+                text = task.title,
                 color = Color.Black,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth(),

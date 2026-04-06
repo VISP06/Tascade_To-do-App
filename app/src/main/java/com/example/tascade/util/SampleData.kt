@@ -17,3 +17,5 @@ val sampleTasks = mutableListOf<Todo>(
     Todo(id = 11, title = R.string.title_11, "Fix bugs reported in last build", 11, isCompleted = false),
     Todo(id = 12, title = R.string.title_12, "Update README with project details", 12, isCompleted = true)
 )*/
+
+//this file can be deleted and has no use to me anymore as the list has been moved to ViewModel

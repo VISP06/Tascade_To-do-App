@@ -1,10 +1,15 @@
 package com.example.tascade.ui.list
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.gestures.snapping.SnapPosition
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -25,6 +30,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -61,14 +68,29 @@ fun TodoApp(){
 
 @Composable
 fun TodoList(tasks:List<Todo>, modifier: Modifier = Modifier, contentPaddingValues: PaddingValues){
+    if(tasks.isEmpty()){
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Image(
+                painter = painterResource(R.drawable.part_1_illustration),
+                contentDescription = null
 
-    LazyColumn(modifier = Modifier, contentPadding=contentPaddingValues) {
-        items(items = tasks, key = { task -> task.id }){ task->
-            Spacer(Modifier.padding(8.dp))
-            TodoCard(
-                task = task,
-                modifier = Modifier.animateItem()
             )
+            Image(
+                painter = painterResource(R.drawable.part_2_illustration),
+                contentDescription = null
+            )
+        }
+    }else {
+        LazyColumn(modifier = Modifier, contentPadding = contentPaddingValues) {
+            items(items = tasks, key = { task -> task.id }) { task ->
+                Spacer(Modifier.padding(8.dp))
+                TodoCard(
+                    task = task,
+                    modifier = Modifier.animateItem()
+                )
+            }
         }
     }
 }
@@ -104,7 +126,7 @@ fun TodoFAB(modifier:Modifier = Modifier) {
             .offset(x = -4.dp, y = -4.dp)
     ) {
         LargeFloatingActionButton(
-            onClick = { vm.addTodo()},
+            onClick = { vm.addTodo("Hello World")},
             shape = CircleShape,
             containerColor = Color(0xFF1A237E),
             modifier = Modifier.border(3.dp, Color.Black, shape = CircleShape)
