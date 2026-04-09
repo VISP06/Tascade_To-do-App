@@ -5,7 +5,6 @@ import androidx.annotation.StringRes
 data class Todo(
     val id:Int,
     val title:String,
-    val desc:String,
     val priority:Int,
     val isCompleted:Boolean = false
 )
