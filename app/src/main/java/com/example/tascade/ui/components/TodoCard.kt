@@ -38,6 +38,8 @@ import com.example.tascade.TodoViewModel
 import com.example.tascade.model.Todo
 import com.example.tascade.ui.theme.BebasNeue
 
+val vm = TodoViewModel()
+
 @Composable
 fun TodoCard(task: Todo, modifier:Modifier = Modifier){
     Box(
@@ -56,6 +58,7 @@ fun TodoCard(task: Todo, modifier:Modifier = Modifier){
                 .fillMaxWidth() //the outer container has determined the width, we just fill into it here
                 .padding(vertical = 32.dp, horizontal = 16.dp) //replaced .size() allowing for bigger text to be placed
         ){
+            //REMEMBER: if u have issues related to space between boundaries and child components try smth like u see below
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -89,7 +92,7 @@ fun TodoCheckBox(modifier:Modifier = Modifier){
                 }
             )
             .clickable(
-                onClick = { checked = !checked}
+                onClick = { checked = !checked }
             ),
         contentAlignment = Alignment.Center
     ){
@@ -100,6 +103,7 @@ fun TodoCheckBox(modifier:Modifier = Modifier){
                 tint = Color.Black,
                 modifier = Modifier.size(18.dp)
             )
+
         }
     }
 }
