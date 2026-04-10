@@ -19,7 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.example.tascade.ui.list.AddTodoDialog
+import com.example.tascade.ui.components.AddTodoDialog
 
 @Composable
 fun TodoFAB(modifier: Modifier = Modifier) {

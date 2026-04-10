@@ -50,6 +50,7 @@ import androidx.compose.ui.window.Dialog
 import com.example.tascade.R
 import com.example.tascade.TodoViewModel
 import com.example.tascade.model.Todo
+import com.example.tascade.ui.components.TodoBottomBar
 import com.example.tascade.ui.components.TodoCard
 import com.example.tascade.ui.components.TodoFAB
 import com.example.tascade.ui.components.TodoTopBar
@@ -62,6 +63,7 @@ val vm = TodoViewModel()
 fun TodoApp() {
     Scaffold(
         topBar = { TodoTopBar() },
+        bottomBar = { TodoBottomBar() },
         floatingActionButton = { TodoFAB() }
     ) { innerPadding ->
         Box(

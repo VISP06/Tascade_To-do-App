@@ -66,7 +66,7 @@ fun TodoCard(task: Todo, modifier:Modifier = Modifier){
                 TodoCheckBox()
                 Text(
                     text = task.title,
-                    color = Color.Black,
+                    color = Color(0xFF1A237E),
                     fontSize = 32.sp,
                     fontFamily = BebasNeue
                 )
@@ -75,7 +75,6 @@ fun TodoCard(task: Todo, modifier:Modifier = Modifier){
     }
 }
 
-@Preview
 @Composable
 fun TodoCheckBox(modifier:Modifier = Modifier){
     var checked by remember { mutableStateOf(false) }

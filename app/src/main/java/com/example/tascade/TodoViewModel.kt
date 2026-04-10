@@ -15,12 +15,13 @@ class TodoViewModel: ViewModel() {
         val testTodo = Todo(
             id = count,
             title = titleInput,
+            isCompleted = false
         )
         _todos.add(0, testTodo)
         count++
     }
 
-    fun removeTodo(indexToRemove:Int): Unit {
-        _todos.removeAt(indexToRemove)
+    fun removeTodo(task:Todo): Unit {
+        _todos.remove(task)
     }
 }
