@@ -20,9 +20,7 @@ class TodoViewModel: ViewModel() {
         count++
     }
 
-    fun removeTodo(indexToRemove:Int): Unit{
+    fun removeTodo(indexToRemove:Int): Unit {
         _todos.removeAt(indexToRemove)
     }
-
-
 }
