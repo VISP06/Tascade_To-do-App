@@ -22,10 +22,10 @@ import androidx.compose.ui.unit.dp
 import com.example.tascade.ui.components.AddTodoDialog
 
 @Composable
-fun TodoFAB(modifier: Modifier = Modifier) {
+fun TodoFAB(modifier: Modifier = Modifier, onAddClicked:(titleInput:String)->Unit) {
     var showAddDialog by remember { mutableStateOf<Boolean>(false) }
     if (showAddDialog) {
-        AddTodoDialog(showAddDialog, onDismiss = { showAddDialog = false })
+        AddTodoDialog(showAddDialog, onDismiss = { showAddDialog = false }, onAddClicked = onAddClicked)
     }
     Box(
         Modifier

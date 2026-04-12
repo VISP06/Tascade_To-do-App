@@ -26,20 +26,25 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.tascade.TodoViewModel
 import com.example.tascade.ui.theme.BebasNeue
+
 
 //under 3 button navigation this button is buried underneath the 3 buttons
 @Preview
 @Composable
-fun TodoBottomBar(){
-
+fun TodoBottomBar(
+    onClearClicked:()->Unit,
+    checkIfCompleted: ()->Boolean
+){
+        if(checkIfCompleted())
             Box(
                 modifier = Modifier.fillMaxWidth(),
                 contentAlignment = Alignment.Center
             ) {
                 OutlinedButton(
                     onClick = {
-
+                        onClearClicked()
                     },
                     shape = RectangleShape,
                     colors = ButtonDefaults.buttonColors(containerColor = Color.White),

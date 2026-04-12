@@ -21,7 +21,13 @@ class TodoViewModel: ViewModel() {
         count++
     }
 
-    fun removeTodo(task:Todo): Unit {
-        _todos.remove(task)
+    fun clearCompleted(){
+        _todos.removeAll { it.isCompleted }
+    }
+
+    fun updateTask(task:Todo){
+        val index = todos.indexOf(task)
+        val myClonedTask = task.copy(isCompleted = !task.isCompleted)
+        _todos[index] = myClonedTask
     }
 }

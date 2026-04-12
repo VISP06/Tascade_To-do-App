@@ -33,10 +33,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import com.example.tascade.ui.list.vm
 
 @Composable
-fun AddTodoDialog(showDialog: Boolean, onDismiss: () -> Unit, modifier: Modifier = Modifier) {
+fun AddTodoDialog(showDialog: Boolean, onDismiss: () -> Unit, modifier: Modifier = Modifier, onAddClicked:(titleInput:String)->Unit) {
     var userTodoInput by remember { mutableStateOf("") }
     Dialog(onDismissRequest = { onDismiss() }) {
         Box(
@@ -97,7 +96,7 @@ fun AddTodoDialog(showDialog: Boolean, onDismiss: () -> Unit, modifier: Modifier
                     }
                     OutlinedButton(
                         onClick = {
-                            vm.addTodo(userTodoInput)
+                            onAddClicked(userTodoInput)
                             onDismiss()
                         },
                         shape = RectangleShape,
