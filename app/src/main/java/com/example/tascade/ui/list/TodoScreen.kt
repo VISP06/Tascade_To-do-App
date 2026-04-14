@@ -51,7 +51,8 @@ fun TodoApp() {
                 }
             }
                 return@TodoBottomBar false
-        })},
+        })
+                    },
         /*
         faced a syntax error here where the parameters passed of onAddClicked are needed to be used
         inside addTodo but couldn't because In Kotlin, when a function passes you a variable,

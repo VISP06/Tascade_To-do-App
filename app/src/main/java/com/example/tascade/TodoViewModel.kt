@@ -2,23 +2,37 @@ package com.example.tascade
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.tascade.data.TodoRepository
 import com.example.tascade.model.Todo
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+import kotlin.collections.emptyList
 
 
-class TodoViewModel: ViewModel() {
-    //this is the main list and any changes made to the list now causes recomposition
+class TodoViewModel(private val repository: TodoRepository): ViewModel() {
+    /*this is the main list and any changes made to the list now causes recomposition
     private val _todos = mutableStateListOf<Todo>() //backing property
     private var count:Int = 0 //used to determine the id/index of a specific card
 
-    var todos: List<Todo> = _todos //public property
+    var todos: List<Todo> = _todos //public property */
+
+    val todos: StateFlow<List<Todo>> = repository.getAllItemsStream()
+        .stateIn(
+            scope = viewModelScope, // The worker that keeps the pipe open
+            started = SharingStarted.WhileSubscribed(5000L), // Standard Android configuration
+            initialValue = emptyList() // What the UI sees for the first millisecond before the DB loads
+        )
     fun addTodo(titleInput:String){
-        val testTodo = Todo(
-            id = count,
+        val newTask = Todo(
             title = titleInput,
             isCompleted = false
         )
-        _todos.add(0, testTodo)
-        count++
+        viewModelScope.launch{
+
+        }
     }
 
     fun clearCompleted(){

@@ -8,6 +8,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 
+//Data Access Object is basically an interface which defines a set of methods used to interact with the database
 @Dao
 interface TodoDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
