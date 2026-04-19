@@ -24,3 +24,5 @@ abstract class TodoDatabase: RoomDatabase() {
         }
     }
 }
+
+//The DAO belongs to the database, and the TodoRepository belongs to the rest of your codebase.

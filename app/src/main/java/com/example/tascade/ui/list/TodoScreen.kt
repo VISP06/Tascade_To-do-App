@@ -12,15 +12,20 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.tascade.R
 import com.example.tascade.TodoViewModel
+import com.example.tascade.data.OfflineTodoRepository
+import com.example.tascade.data.TodoDatabase
 import com.example.tascade.model.Todo
 import com.example.tascade.ui.components.TodoBottomBar
 import com.example.tascade.ui.components.TodoCard
@@ -29,30 +34,17 @@ import com.example.tascade.ui.components.TodoTopBar
 import com.example.tascade.ui.theme.TascadeTheme
 import com.example.tascade.util.halftoneBackground
 
-/*
-   where ever we need access to data belonging to viewModel class we need to basically
-   add a parameter which will be a function.
-   body of that function(say function x) will be present in the function call of the composable (ex: TodoBottomBar(onClearClicked ={..body of function x})
-   and function x itself will be called from where the viewmodel is needed
-   we do this because we cannot just have another viewModel object in another file as the data would be different
-   hence why we just use functions to pass the message upwards
- */
 @Composable
 fun TodoApp() {
-    val vm = remember { TodoViewModel() }
+    val context = LocalContext.current
+    val databaseObject = TodoDatabase.getDatabase(context = context)
+    val vm = remember { TodoViewModel(repository = OfflineTodoRepository(todoDao = databaseObject.todoDao()))}
+    val tasks by vm.todos.collectAsState()
+    val showClearButton by vm.hasCompletedTasks.collectAsState(initial = false)
+
     Scaffold(
         topBar = { TodoTopBar() },
-        bottomBar = { TodoBottomBar(
-            onClearClicked = {vm.clearCompleted()},
-            checkIfCompleted = {
-            vm.todos.forEach { task->
-                if(task.isCompleted){
-                    return@TodoBottomBar true //we have to mention here that it is the return type of the composable and not returntype of forEach
-                }
-            }
-                return@TodoBottomBar false
-        })
-                    },
+        bottomBar = { TodoBottomBar(onClearClicked = {vm.clearCompleted()}, showClearButton)},
         /*
         faced a syntax error here where the parameters passed of onAddClicked are needed to be used
         inside addTodo but couldn't because In Kotlin, when a function passes you a variable,
@@ -76,7 +68,7 @@ fun TodoApp() {
 
         ) {
 
-            TodoList(vm.todos, contentPaddingValues = innerPadding, onTaskChecked = { task -> vm.updateTask(task) })
+            TodoList(tasks = tasks, contentPaddingValues = innerPadding, onTaskChecked = { task -> vm.updateTask(task) })
 
         }
     }

@@ -3,6 +3,7 @@ package com.example.tascade.ui.components
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedButton
@@ -26,12 +27,13 @@ import com.example.tascade.ui.theme.BebasNeue
 @Composable
 fun TodoBottomBar(
     onClearClicked:()->Unit,
-    checkIfCompleted: ()->Boolean //used to go through the entire list to see if there are any tasks which are checked off by the user, if yes, then this button appears on the screen
+    isChecked:Boolean
+    //checkIfCompleted: ()->Boolean  used to go through the entire list to see if there are any tasks which are checked off by the user, if yes, then this button appears on the screen
 ){
-        if(checkIfCompleted())
+        if(isChecked)
             Box(
-                modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.Center
+                modifier = Modifier.fillMaxWidth().navigationBarsPadding(),
+                contentAlignment = Alignment.Center,
             ) {
                 OutlinedButton(
                     onClick = {
