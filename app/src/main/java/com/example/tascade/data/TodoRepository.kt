@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 //mainly used for easy testing and we also create offline/online version incase the app decides to expand and use cloud database. you won't have to alter any code just create an online version (ig)
 interface TodoRepository {
 
-    fun getAllItemsStream(): Flow<List<Todo>>
+    fun getAllTodos(): Flow<List<Todo>>
 
     suspend fun insertTodo(task: Todo)
 

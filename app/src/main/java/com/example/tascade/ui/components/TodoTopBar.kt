@@ -15,6 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tascade.R
+import com.example.tascade.ui.theme.BebasNeue
 
 @Composable
 fun TodoTopBar(modifier: Modifier = Modifier) {
@@ -33,6 +34,7 @@ fun TodoTopBar(modifier: Modifier = Modifier) {
             fontWeight = FontWeight.ExtraBold,
             letterSpacing = 5.sp,
             fontSize = 64.sp,
+            fontFamily = BebasNeue,
             modifier = modifier
 
         )

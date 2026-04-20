@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 class OfflineTodoRepository(private val todoDao: TodoDao): TodoRepository {
 
-    override fun getAllItemsStream(): Flow<List<Todo>> =todoDao.getAllTodos()
+    override fun getAllTodos(): Flow<List<Todo>> = todoDao.getAllTodos()
 
     override suspend fun updateTodo(task: Todo) = todoDao.updateTodo(task)
 
