@@ -36,7 +36,7 @@ fun TodoCard(
     onCheckedChange: () -> Unit,
     modifier: Modifier = Modifier,
     isCurrentlyChecked: Boolean,
-    state: LazyListState,
+
 ) {
     Box(
         modifier
