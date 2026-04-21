@@ -20,7 +20,7 @@ class TodoViewModel(private val repository: TodoRepository): ViewModel() {
     var todos: List<Todo> = _todos //public property */
 
     //we need the list returned to us from the database in Stateflow<todo> format and not in Flow<Todo>
-    val todos: StateFlow<List<Todo>> = repository.getAllItemsStream()
+    val todos: StateFlow<List<Todo>> = repository.getAllTodos()
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000L),

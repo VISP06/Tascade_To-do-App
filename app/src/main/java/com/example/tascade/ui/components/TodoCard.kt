@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -19,6 +20,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.TransformOrigin
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -28,24 +31,28 @@ import com.example.tascade.ui.theme.BebasNeue
 
 
 @Composable
-fun TodoCard(task: Todo, onCheckedChange: ()->Unit, modifier:Modifier = Modifier, isCurrentlyChecked: Boolean){
+fun TodoCard(
+    task: Todo,
+    onCheckedChange: () -> Unit,
+    modifier: Modifier = Modifier,
+    isCurrentlyChecked: Boolean,
+    state: LazyListState,
+) {
     Box(
-        Modifier
+        modifier
             .clip(RoundedCornerShape(8.dp))
             .background(Color.Black)
             .padding(start = 5.dp, top = 5.dp)
             .fillMaxWidth(0.9f)
-
-    ){
+    ) {
         Box(
             Modifier
-                .offset(x = -4.dp, y = -4.dp)
+                .offset(x = (-4).dp, y = (-4).dp)
                 .border(width = 2.dp, color = Color.Black, shape = RoundedCornerShape(8.dp))
                 .background(color = Color.White, shape = RoundedCornerShape(8.dp))
-                .fillMaxWidth() //the outer container has determined the width, we just fill into it here
-                .padding(vertical = 32.dp, horizontal = 16.dp) //replaced .size() allowing for bigger text to be placed
-        ){
-            //REMEMBER: if u have issues related to space between boundaries and child components try smth like u see below
+                .fillMaxWidth()
+                .padding(vertical = 32.dp, horizontal = 16.dp)
+        ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -69,10 +76,10 @@ fun TodoCheckBox(modifier:Modifier = Modifier, onCheckedChange: () -> Unit, isCu
             .size(28.dp)
             .border(width = 3.dp, color = Color.Black)
             .background(
-                color = if(isCurrentlyChecked){
+                color = if (isCurrentlyChecked) {
                     Color.Yellow
 
-                }else{
+                } else {
                     Color.White
                 }
             )

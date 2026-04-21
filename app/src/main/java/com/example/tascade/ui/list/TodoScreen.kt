@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -36,8 +38,7 @@ import com.example.tascade.util.halftoneBackground
 
 @Composable
 fun TodoApp() {
-    val context = LocalContext.current
-    val databaseObject = TodoDatabase.getDatabase(context = context)
+    val databaseObject = TodoDatabase.getDatabase(context = LocalContext.current)
     val vm = remember { TodoViewModel(repository = OfflineTodoRepository(todoDao = databaseObject.todoDao()))}
     val tasks by vm.todos.collectAsState()
     val showClearButton by vm.hasCompletedTasks.collectAsState(initial = false)
@@ -81,6 +82,7 @@ fun TodoList(
     contentPaddingValues: PaddingValues,
     onTaskChecked:(task:Todo)->Unit
 ) {
+    val lazyListState = rememberLazyListState()
     if (tasks.isEmpty()) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -95,17 +97,16 @@ fun TodoList(
             )
         }
     } else {
-        LazyColumn(modifier = Modifier, contentPadding = contentPaddingValues) {
-            items(items = tasks, key = {it.id}) { task ->
-                Spacer(Modifier.height(8.dp))
-
-                    TodoCard(
-                        task = task,
-                        onCheckedChange = { onTaskChecked(task) },
-                        isCurrentlyChecked = task.isCompleted,
-                        modifier = Modifier.animateItem()
-                    )
-
+        LazyColumn(state = lazyListState,modifier = Modifier, contentPadding = contentPaddingValues) {
+            items(items = tasks) { task ->
+                Spacer(Modifier.height(12.dp))
+                TodoCard(
+                    task = task,
+                    onCheckedChange = { onTaskChecked(task) },
+                    isCurrentlyChecked = task.isCompleted,
+                    modifier = Modifier.animateItem(),
+                    state = lazyListState,
+                )
             }
         }
     }
