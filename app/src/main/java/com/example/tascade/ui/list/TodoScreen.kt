@@ -1,5 +1,7 @@
 package com.example.tascade.ui.list
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -82,13 +84,20 @@ fun TodoList(
     onTaskChecked:(task:Todo)->Unit
 ) {
     val lazyListState = rememberLazyListState()
-    
+
     //We only enable the IOS scroll effect when there are enough items to actually scroll.
     val enable3DEffect by remember(tasks) {
         derivedStateOf {
-            tasks.size > 5
+            tasks.size >= 5
         }
     }
+
+    //animate the transition between normal list and 3D scroll
+    val effectFactor by animateFloatAsState(
+        targetValue = if (enable3DEffect) 1f else 0f,
+        animationSpec = tween(durationMillis = 600),
+        label = "3DEffectFactor"
+    )
 
     if (tasks.isEmpty()) {
         Column(
@@ -111,50 +120,49 @@ fun TodoList(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             itemsIndexed(items = tasks, key = { _, task -> task.id }) { index, task ->
-                Spacer(Modifier.height(12.dp))
+                Spacer(Modifier.height(8.dp))
 
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .animateItem()
                         .graphicsLayer {
-                            if (enable3DEffect) {
-                                val layoutInfo = lazyListState.layoutInfo
-                                val itemInfo = layoutInfo.visibleItemsInfo.firstOrNull { it.index == index }
+                            val layoutInfo = lazyListState.layoutInfo
+                            val todoInfo = layoutInfo.visibleItemsInfo.firstOrNull { it.index == index }
 
-                                if (itemInfo != null) {
-                                    // Calculate the center of the viewport
-                                    val viewportHeight = layoutInfo.viewportEndOffset - layoutInfo.viewportStartOffset
-                                    val viewportCenter = viewportHeight / 2f
+                            if (todoInfo != null && effectFactor > 0f) {
+                                // Calculate the center of the viewport
+                                val viewportHeight = layoutInfo.viewportEndOffset - layoutInfo.viewportStartOffset
+                                val viewportCenter = viewportHeight / 2f
 
-                                    // Calculate item's center position relative to viewport
-                                    val itemCenter = itemInfo.offset + itemInfo.size / 2f
-                                    
-                                    // Normalized distance from center (-1.0 to 1.0)
-                                    val distanceFromCenter = (itemCenter - viewportCenter) / viewportCenter
-                                    
-                                    // 1. Rotation: Items tilt away as they move towards the edges
-                                    // Using -35f to create a noticeable "rolling" effect
-                                    rotationX = -35f * distanceFromCenter
+                                //Calculate item's center position relative to viewport
+                                val itemCenter = todoInfo.offset + todoInfo.size / 2f
 
-                                    // 2. Perspective Depth: Adjust camera to make the 3D effect pop
-                                    cameraDistance = 8f * density
+                                //Normalized distance from center (-1.0 to 1.0)
+                                val distanceFromCenter = (itemCenter - viewportCenter) / viewportCenter
+                                
+                                //Rotation: Items tilt away as they move towards the edges
+                                //Applying effectFactor for smooth transition
+                                rotationX = (-35f * distanceFromCenter) * effectFactor
 
-                                    // 3. Translation: Subtle Y-offset to mimic the curvature of a cylinder.
-                                    // This keeps items looking "attached" to the rotating drum.
-                                    translationY = distanceFromCenter * (itemInfo.size / 4f)
+                                //Perspective Depth: Adjust camera to make the 3D effect pop
+                                cameraDistance = 8f * density
 
-                                    // 4. Scale: Items get slightly smaller as they rotate away
-                                    val scaleFactor = 1f - (abs(distanceFromCenter) * 0.12f)
-                                    scaleX = scaleFactor.coerceIn(0.88f, 1f)
-                                    scaleY = scaleFactor.coerceIn(0.88f, 1f)
+                                //Translation: Subtle Y-offset to mimic the curvature of a cylinder.
+                                translationY = (distanceFromCenter * (todoInfo.size / 4f)) * effectFactor
 
-                                    // 5. Alpha: Subtle fade for items at the far edges for more realism
-                                    alpha = (1f - abs(distanceFromCenter) * 0.3f).coerceIn(0.6f, 1f)
-                                    
-                                    // Ensure rotation happens around the center
-                                    transformOrigin = TransformOrigin(0.5f, 0.5f)
-                                }
+                                //Scale: Items get slightly smaller as they rotate away
+                                val targetScale = 1f - (abs(distanceFromCenter) * 0.12f)
+                                val currentScale = 1f + (targetScale - 1f) * effectFactor
+                                scaleX = currentScale.coerceIn(0.88f, 1f)
+                                scaleY = currentScale.coerceIn(0.88f, 1f)
+
+                                //Subtle fade for items at the far edges for more realism
+                                val targetAlpha = (1f - abs(distanceFromCenter) * 0.3f).coerceIn(0.6f, 1f)
+                                alpha = 1f + (targetAlpha - 1f) * effectFactor
+                                
+                                // Ensure rotation happens around the center
+                                transformOrigin = TransformOrigin(0.5f, 0.5f)
                             }
                         }
                 ) {
