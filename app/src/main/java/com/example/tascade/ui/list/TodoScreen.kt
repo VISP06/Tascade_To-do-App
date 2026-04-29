@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Scaffold
@@ -25,9 +26,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.tascade.R
 import com.example.tascade.TodoViewModel
@@ -41,6 +44,7 @@ import com.example.tascade.ui.components.TodoTopBar
 import com.example.tascade.ui.theme.TascadeTheme
 import com.example.tascade.util.halftoneBackground
 import kotlin.math.abs
+
 
 @Composable
 fun TodoApp() {
@@ -69,8 +73,19 @@ fun TodoApp() {
             contentAlignment = Alignment.Center
 
         ) {
-
-            TodoList(tasks = tasks, contentPaddingValues = innerPadding, onTaskChecked = { task -> vm.updateTask(task) })
+            val lazyListState = rememberLazyListState()
+            val screenHeight = (LocalConfiguration.current.screenHeightDp.dp)/5
+            TodoList(
+                tasks = tasks,
+                contentPaddingValues = PaddingValues(
+                    top = innerPadding.calculateTopPadding() + screenHeight,
+                    bottom = innerPadding.calculateBottomPadding() + screenHeight,
+                    start = 0.dp,
+                    end = 0.dp
+                ),
+                onTaskChecked = { task -> vm.updateTask(task) },
+                lazyListState = lazyListState
+            )
 
         }
     }
@@ -81,9 +96,9 @@ fun TodoList(
     tasks: List<Todo>,
     modifier: Modifier = Modifier,
     contentPaddingValues: PaddingValues,
-    onTaskChecked:(task:Todo)->Unit
+    onTaskChecked:(task:Todo)->Unit,
+    lazyListState: LazyListState
 ) {
-    val lazyListState = rememberLazyListState()
 
     //We only enable the IOS scroll effect when there are enough items to actually scroll.
     val enable3DEffect by remember(tasks) {
