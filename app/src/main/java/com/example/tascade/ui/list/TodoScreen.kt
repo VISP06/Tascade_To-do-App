@@ -74,12 +74,12 @@ fun TodoApp() {
 
         ) {
             val lazyListState = rememberLazyListState()
-            val screenHeight = (LocalConfiguration.current.screenHeightDp.dp)/5
+
             TodoList(
                 tasks = tasks,
                 contentPaddingValues = PaddingValues(
-                    top = innerPadding.calculateTopPadding() + screenHeight,
-                    bottom = innerPadding.calculateBottomPadding() + screenHeight,
+                    top = innerPadding.calculateTopPadding(),
+                    bottom = innerPadding.calculateBottomPadding(),
                     start = 0.dp,
                     end = 0.dp
                 ),
@@ -141,45 +141,6 @@ fun TodoList(
                     modifier = Modifier
                         .fillMaxWidth()
                         .animateItem()
-                        .graphicsLayer {
-                            val layoutInfo = lazyListState.layoutInfo
-                            val todoInfo = layoutInfo.visibleItemsInfo.firstOrNull { it.index == index }
-
-                            if (todoInfo != null && effectFactor > 0f) {
-                                // Calculate the center of the viewport
-                                val viewportHeight = layoutInfo.viewportEndOffset - layoutInfo.viewportStartOffset
-                                val viewportCenter = viewportHeight / 2f
-
-                                //Calculate item's center position relative to viewport
-                                val itemCenter = todoInfo.offset + todoInfo.size / 2f
-
-                                //Normalized distance from center (-1.0 to 1.0)
-                                val distanceFromCenter = (itemCenter - viewportCenter) / viewportCenter
-                                
-                                //Rotation: Items tilt away as they move towards the edges
-                                //Applying effectFactor for smooth transition
-                                rotationX = (-35f * distanceFromCenter) * effectFactor
-
-                                //Perspective Depth: Adjust camera to make the 3D effect pop
-                                cameraDistance = 8f * density
-
-                                //Translation: Subtle Y-offset to mimic the curvature of a cylinder.
-                                translationY = (distanceFromCenter * (todoInfo.size / 4f)) * effectFactor
-
-                                //Scale: Items get slightly smaller as they rotate away
-                                val targetScale = 1f - (abs(distanceFromCenter) * 0.12f)
-                                val currentScale = 1f + (targetScale - 1f) * effectFactor
-                                scaleX = currentScale.coerceIn(0.88f, 1f)
-                                scaleY = currentScale.coerceIn(0.88f, 1f)
-
-                                //Subtle fade for items at the far edges for more realism
-                                val targetAlpha = (1f - abs(distanceFromCenter) * 0.3f).coerceIn(0.6f, 1f)
-                                alpha = 1f + (targetAlpha - 1f) * effectFactor
-                                
-                                // Ensure rotation happens around the center
-                                transformOrigin = TransformOrigin(0.5f, 0.5f)
-                            }
-                        }
                 ) {
                     TodoCard(
                         task = task,
