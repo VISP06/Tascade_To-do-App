@@ -12,5 +12,5 @@ class OfflineTodoRepository(private val todoDao: TodoDao): TodoRepository {
 
     override suspend fun insertTodo(task: Todo) = todoDao.insertTodo(task)
 
-    override suspend fun clearCompletedTodos() = todoDao.clearCompletedTodos()
+    override suspend fun deleteTodo(task: Todo) = todoDao.deleteTodo(task)
 }

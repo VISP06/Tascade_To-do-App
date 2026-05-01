@@ -22,44 +22,10 @@ import androidx.compose.ui.unit.sp
 import com.example.tascade.ui.theme.BebasNeue
 
 
-//under 3 button navigation this button is buried underneath the 3 buttons
 @Preview
 @Composable
 fun TodoBottomBar(
-    onClearClicked:()->Unit,
-    isChecked:Boolean
-    //checkIfCompleted: ()->Boolean  used to go through the entire list to see if there are any tasks which are checked off by the user, if yes, then this button appears on the screen
+
 ){
-        if(isChecked)
-            Box(
-                modifier = Modifier.fillMaxWidth().navigationBarsPadding(),
-                contentAlignment = Alignment.Center,
-            ) {
-                OutlinedButton(
-                    onClick = {
-                        onClearClicked()
-                    },
-                    shape = RectangleShape,
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.White),
-                    border = BorderStroke(3.dp, color = Color.Black),
-                    modifier = Modifier
-                        .shadow(
-                            elevation = 6.dp,
-                            shape = RectangleShape,
-                            ambientColor = Color.Black.copy(alpha = 0.3f),
-                            spotColor = Color.Black.copy(alpha = 0.3f)
-                        )
-                        .fillMaxWidth(0.8f)
-                        .padding(vertical = 16.dp, horizontal = 16.dp)
-                ) {
-                    Text(
-                        text = "Clear Completed Tasks",
-                        color = Color.Black,
-                        fontStyle = FontStyle.Italic,
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.Bold,
-                        fontFamily = BebasNeue
-                    )
-                }
-            }
+
 }
