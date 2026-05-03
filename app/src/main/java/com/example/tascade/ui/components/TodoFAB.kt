@@ -29,7 +29,7 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun TodoFAB(modifier: Modifier = Modifier, onAddClicked:(titleInput:String)->Unit) {
+fun TodoFAB(modifier: Modifier = Modifier, onAddClicked:(titleInput:String)->Unit, soundPool:SoundPool, buttonSoundId:Int) {
     var showAddDialog by remember { mutableStateOf<Boolean>(false) }
 
     //Clicking animations for FAB
@@ -39,19 +39,6 @@ fun TodoFAB(modifier: Modifier = Modifier, onAddClicked:(titleInput:String)->Uni
         targetValue = if(isPressed) 0.dp else -4.dp
     )
 
-    //Sound effects for clicking
-    val view = LocalView.current
-    val context = LocalContext.current
-
-    val soundPool = remember {
-        SoundPool.Builder()
-            .setMaxStreams(5)
-            .build()
-    }
-
-    val soundId = remember {
-        soundPool.load(context, R.raw.button_press, 1)
-    }
 
     if (showAddDialog) {
         AddTodoDialog(showAddDialog, onDismiss = { showAddDialog = false }, onAddClicked = onAddClicked)
@@ -65,7 +52,7 @@ fun TodoFAB(modifier: Modifier = Modifier, onAddClicked:(titleInput:String)->Uni
         LargeFloatingActionButton(
             onClick = {
                 showAddDialog = true
-                soundPool.play(soundId, 1f, 1f, 0, 0, 1f)
+                soundPool.play(buttonSoundId, 1f, 1f, 0, 0, 1f)
             },
             shape = CircleShape,
             containerColor = Color(0xFF1A237E),

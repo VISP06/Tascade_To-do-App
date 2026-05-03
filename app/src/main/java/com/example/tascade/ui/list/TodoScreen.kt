@@ -1,5 +1,6 @@
 package com.example.tascade.ui.list
 
+import android.media.SoundPool
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -23,13 +24,16 @@ import androidx.compose.material3.SwipeToDismissBox
 import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -43,6 +47,7 @@ import com.example.tascade.ui.components.TodoFAB
 import com.example.tascade.ui.components.TodoTopBar
 import com.example.tascade.ui.theme.TascadeTheme
 import com.example.tascade.util.halftoneBackground
+import kotlinx.coroutines.flow.debounce
 
 
 @Composable
@@ -51,13 +56,29 @@ fun TodoApp() {
     val vm = remember { TodoViewModel(repository = OfflineTodoRepository(todoDao = databaseObject.todoDao()))}
     val tasks by vm.todos.collectAsState()
 
+    //Sound effects for clicking
+    val view = LocalView.current
+    val context = LocalContext.current
+
+    val soundPool = remember {
+        SoundPool.Builder()
+            .setMaxStreams(5)
+            .build()
+    }
+
+    val buttonSoundId = remember {
+        soundPool.load(context, R.raw.button_press, 1)
+    }
+
     Scaffold(
         topBar = { TodoTopBar() },
         floatingActionButton = { TodoFAB(
             onAddClicked = {
                     incomingTitle:String ->
                 vm.addTodo(titleInput = incomingTitle)
-            }
+            },
+            soundPool = soundPool,
+            buttonSoundId = buttonSoundId,
         )
         }
 
@@ -82,7 +103,8 @@ fun TodoApp() {
                 ),
                 onTaskChecked = { task -> vm.updateTask(task) },
                 onTaskDeleted = { task -> vm.deleteTodo(task) },
-                lazyListState = lazyListState
+                lazyListState = lazyListState,
+
             )
 
         }
@@ -97,7 +119,8 @@ fun TodoList(
     contentPaddingValues: PaddingValues,
     onTaskChecked:(task:Todo)->Unit,
     onTaskDeleted: (task: Todo) -> Unit,
-    lazyListState: LazyListState
+    lazyListState: LazyListState,
+
 ) {
 
     if (tasks.isEmpty()) {
@@ -120,6 +143,7 @@ fun TodoList(
             contentPadding = contentPaddingValues,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
             itemsIndexed(items = tasks, key = { _, task -> task.id }) { _, task ->
                 val dismissState = rememberSwipeToDismissBoxState(
                     confirmValueChange = {
