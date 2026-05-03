@@ -1,7 +1,10 @@
 package com.example.tascade.ui.components
 
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
@@ -18,12 +21,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
-import com.example.tascade.ui.components.AddTodoDialog
 
 @Composable
 fun TodoFAB(modifier: Modifier = Modifier, onAddClicked:(titleInput:String)->Unit) {
     var showAddDialog by remember { mutableStateOf<Boolean>(false) }
+
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+    val scale by animateDpAsState(
+        targetValue = if(isPressed) 0.dp else -4.dp
+    )
+
     if (showAddDialog) {
         AddTodoDialog(showAddDialog, onDismiss = { showAddDialog = false }, onAddClicked = onAddClicked)
     }
@@ -31,7 +41,7 @@ fun TodoFAB(modifier: Modifier = Modifier, onAddClicked:(titleInput:String)->Uni
         Modifier
             .clip(CircleShape)
             .background(Color.Black)
-            .offset(x = -4.dp, y = -4.dp)
+            .offset(x = scale, y = scale)
     ) {
         LargeFloatingActionButton(
             onClick = {
@@ -39,7 +49,9 @@ fun TodoFAB(modifier: Modifier = Modifier, onAddClicked:(titleInput:String)->Uni
             },
             shape = CircleShape,
             containerColor = Color(0xFF1A237E),
-            modifier = Modifier.border(3.dp, Color.Black, shape = CircleShape)
+            interactionSource = interactionSource,
+            modifier = Modifier
+                .border(3.dp, Color.Black, shape = CircleShape)
         ) {
             Icon(
                 Icons.Filled.Add,
