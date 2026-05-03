@@ -122,7 +122,6 @@ fun TodoList(
     lazyListState: LazyListState,
 
 ) {
-
     if (tasks.isEmpty()) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,

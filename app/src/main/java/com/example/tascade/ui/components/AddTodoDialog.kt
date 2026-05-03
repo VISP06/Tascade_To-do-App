@@ -3,6 +3,7 @@ package com.example.tascade.ui.components
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,14 +21,20 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -37,6 +44,15 @@ import androidx.compose.ui.window.Dialog
 @Composable
 fun AddTodoDialog(showDialog: Boolean, onDismiss: () -> Unit, modifier: Modifier = Modifier, onAddClicked:(titleInput:String)->Unit) {
     var userTodoInput by remember { mutableStateOf("") }
+    val isButtonEnabled by remember{ derivedStateOf { userTodoInput.isNotEmpty() } }
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val focusRequester = remember { FocusRequester() }
+    LaunchedEffect(Unit) {
+        focusRequester.requestFocus()
+        // Request focus and show the keyboard
+        keyboardController?.show()
+    }
+
     Dialog(onDismissRequest = { onDismiss() }) {
         Box(
             modifier = Modifier
@@ -73,6 +89,8 @@ fun AddTodoDialog(showDialog: Boolean, onDismiss: () -> Unit, modifier: Modifier
                         .border(width = 3.dp, color = Color.Black)
                         .background(color = Color.DarkGray)
                         .weight(1f)
+                        .focusRequester(focusRequester)
+
                 )
 
                 Spacer(Modifier.weight(0.1f))
@@ -99,8 +117,12 @@ fun AddTodoDialog(showDialog: Boolean, onDismiss: () -> Unit, modifier: Modifier
                             onAddClicked(userTodoInput)
                             onDismiss()
                         },
+                        enabled = isButtonEnabled,
                         shape = RectangleShape,
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1A237E)),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFF1A237E),
+                            disabledContainerColor = Color(0xFFB39DDB)
+                        ),
                         border = BorderStroke(3.dp, color = Color.Black)
                     ){
                         Text(
