@@ -1,8 +1,10 @@
 package com.example.tascade.ui.components
 
+import android.media.SoundPool
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import com.example.tascade.R
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Box
@@ -22,17 +24,34 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun TodoFAB(modifier: Modifier = Modifier, onAddClicked:(titleInput:String)->Unit) {
     var showAddDialog by remember { mutableStateOf<Boolean>(false) }
 
+    //Clicking animations for FAB
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
     val scale by animateDpAsState(
         targetValue = if(isPressed) 0.dp else -4.dp
     )
+
+    //Sound effects for clicking
+    val view = LocalView.current
+    val context = LocalContext.current
+
+    val soundPool = remember {
+        SoundPool.Builder()
+            .setMaxStreams(5)
+            .build()
+    }
+
+    val soundId = remember {
+        soundPool.load(context, R.raw.button_press, 1)
+    }
 
     if (showAddDialog) {
         AddTodoDialog(showAddDialog, onDismiss = { showAddDialog = false }, onAddClicked = onAddClicked)
@@ -46,6 +65,7 @@ fun TodoFAB(modifier: Modifier = Modifier, onAddClicked:(titleInput:String)->Uni
         LargeFloatingActionButton(
             onClick = {
                 showAddDialog = true
+                soundPool.play(soundId, 1f, 1f, 0, 0, 1f)
             },
             shape = CircleShape,
             containerColor = Color(0xFF1A237E),
