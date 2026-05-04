@@ -18,7 +18,7 @@ import com.example.tascade.R
 import com.example.tascade.ui.theme.BebasNeue
 
 @Composable
-fun TodoTopBar(modifier: Modifier = Modifier) {
+fun TodoTopBar(modifier: Modifier = Modifier, topBarHeadingId:Int) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -29,7 +29,7 @@ fun TodoTopBar(modifier: Modifier = Modifier) {
     ) {
 
         Text(
-            text = stringResource(R.string.top_bar_title),
+            text = stringResource(topBarHeadingId),
             color = Color.White,
             fontWeight = FontWeight.ExtraBold,
             letterSpacing = 5.sp,

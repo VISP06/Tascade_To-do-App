@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.example.tascade.ui.list.TodoApp
+import com.example.tascade.ui.TascadeApp
 import com.example.tascade.ui.theme.TascadeTheme
 
 class MainActivity : ComponentActivity() {
@@ -13,7 +13,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             TascadeTheme {
-                TodoApp()
+                TascadeApp()
             }
         }
     }

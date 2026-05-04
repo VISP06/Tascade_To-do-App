@@ -50,67 +50,6 @@ import com.example.tascade.util.halftoneBackground
 import kotlinx.coroutines.flow.debounce
 
 
-@Composable
-fun TodoApp() {
-    val databaseObject = TodoDatabase.getDatabase(context = LocalContext.current)
-    val vm = remember { TodoViewModel(repository = OfflineTodoRepository(todoDao = databaseObject.todoDao()))}
-    val tasks by vm.todos.collectAsState()
-
-    //Sound effects for clicking
-    val view = LocalView.current
-    val context = LocalContext.current
-
-    val soundPool = remember {
-        SoundPool.Builder()
-            .setMaxStreams(5)
-            .build()
-    }
-
-    val buttonSoundId = remember {
-        soundPool.load(context, R.raw.button_press, 1)
-    }
-
-    Scaffold(
-        topBar = { TodoTopBar() },
-        floatingActionButton = { TodoFAB(
-            onAddClicked = {
-                    incomingTitle:String ->
-                vm.addTodo(titleInput = incomingTitle)
-            },
-            soundPool = soundPool,
-            buttonSoundId = buttonSoundId,
-        )
-        }
-
-    ) { innerPadding ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color(0xFFFACC15))
-                .halftoneBackground(),
-            contentAlignment = Alignment.Center
-
-        ) {
-            val lazyListState = rememberLazyListState()
-
-            TodoList(
-                tasks = tasks,
-                contentPaddingValues = PaddingValues(
-                    top = innerPadding.calculateTopPadding(),
-                    bottom = innerPadding.calculateBottomPadding(),
-                    start = 0.dp,
-                    end = 0.dp
-                ),
-                onTaskChecked = { task -> vm.updateTask(task) },
-                onTaskDeleted = { task -> vm.deleteTodo(task) },
-                lazyListState = lazyListState,
-
-            )
-
-        }
-    }
-}
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TodoList(
@@ -192,10 +131,3 @@ fun TodoList(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun TodoAppPreview() {
-    TascadeTheme {
-        TodoApp()
-    }
-}

@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Tascade</string>
-    <string name="top_bar_title">Tasks</string>
+    <string name="top_bar_title1">Tasks</string>
+    <string name="top_bar_title2">Focus Block</string>
     <string name="title_1">Go to the supermarket and find shop named DairyDream Store</string>
     <string name="title_2">The dropdown button is not working as expected</string>
     <string name="title_3">It is not leg day :)</string>
