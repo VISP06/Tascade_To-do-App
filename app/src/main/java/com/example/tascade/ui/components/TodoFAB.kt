@@ -23,9 +23,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -36,7 +33,7 @@ fun TodoFAB(modifier: Modifier = Modifier, onAddClicked:(titleInput:String)->Uni
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
     val scale by animateDpAsState(
-        targetValue = if(isPressed) 0.dp else -4.dp
+        targetValue = if(isPressed) 0.dp else (-4).dp
     )
 
 
@@ -44,7 +41,7 @@ fun TodoFAB(modifier: Modifier = Modifier, onAddClicked:(titleInput:String)->Uni
         AddTodoDialog(showAddDialog, onDismiss = { showAddDialog = false }, onAddClicked = onAddClicked)
     }
     Box(
-        Modifier
+        modifier
             .clip(CircleShape)
             .background(Color.Black)
             .offset(x = scale, y = scale)

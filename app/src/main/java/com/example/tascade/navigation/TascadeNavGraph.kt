@@ -1,5 +1,6 @@
 package com.example.tascade.navigation
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -21,6 +22,7 @@ import com.example.tascade.ui.list.TodoScreen
 @Composable
 fun TascadeNavGraph(
     navController: NavHostController,
+    innerPadding: PaddingValues,
     modifier:Modifier = Modifier
 ){
     NavHost(
@@ -39,7 +41,8 @@ fun TascadeNavGraph(
             val tasks by vm.todos.collectAsState()
             TodoScreen(
                 tasks = tasks,
-                vm = vm
+                vm = vm,
+                globalPadding = innerPadding
             )
         }
         composable(route = POMODORO){

@@ -16,9 +16,10 @@ fun TascadeApp() {
     val navController = rememberNavController()
     Scaffold(
         bottomBar = {MainBottomBar()}
+
     ) {
         innerPadding->
-        TascadeNavGraph(navController = navController, modifier = Modifier.padding(innerPadding))
+        TascadeNavGraph(navController = navController, innerPadding = innerPadding)
     }
 }
 

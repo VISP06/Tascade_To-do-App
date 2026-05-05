@@ -40,6 +40,7 @@ import com.example.tascade.util.halftoneBackground
 
 @Composable
 fun TodoScreen(
+    globalPadding: PaddingValues,
     vm: TodoViewModel,
     tasks: List<Todo>
 ){
@@ -65,10 +66,12 @@ fun TodoScreen(
             },
             soundPool = soundPool,
             buttonSoundId = buttonSoundId,
+            modifier = Modifier.padding(globalPadding)
         )
         }
 
     ) { innerPadding ->
+
         Box(
             modifier = Modifier
                 .fillMaxSize()
