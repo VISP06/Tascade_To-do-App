@@ -46,7 +46,7 @@ fun TascadeNavGraph(
             )
         }
         composable(route = POMODORO){
-
+            PomodoroScreen(globalPadding = innerPadding)
         }
     }
 }

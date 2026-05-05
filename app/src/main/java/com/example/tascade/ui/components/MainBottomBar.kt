@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -34,14 +35,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.tascade.navigation.AppRoutes
 import com.example.tascade.ui.theme.BebasNeue
 
-enum class AppScreen { TASKS, TIMER }
+@Preview
 @Composable
 fun MainBottomBar(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navController: NavHostController
 ){
-    var currentScreen by remember { mutableStateOf(AppScreen.TASKS) }
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -49,28 +55,50 @@ fun MainBottomBar(
             .navigationBarsPadding()
             .height(80.dp)
             .border(width = 3.dp, color = Color.Black)
-            .padding(start = 36.dp, top = 40.dp)
+
     ){
         Row(
             modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly
         ){
             AnimatedContent(
-                targetState = (currentScreen == AppScreen.TASKS),
+                targetState = (currentRoute == AppRoutes.TASKS),
 
             ){ isActive->
                 if(isActive){
-                    TaskIconFocused(onTaskClick = { currentScreen = AppScreen.TASKS}, )
+                    TaskIconFocused()
                 }else{
-                    TaskIconDefault()
+                    TaskIconDefault(onTaskClick={navController.navigate(AppRoutes.TASKS){
+                        popUpTo(navController.graph.startDestinationId) {
+                            saveState = true
+                        }
+
+                        // RULE 2: No Clones
+                        launchSingleTop = true
+
+                        // RULE 3: Remember My Place
+                        restoreState = true
+
+                    } })
                 }
             }
             AnimatedContent(
-                targetState = (currentScreen == AppScreen.TIMER)
+                targetState = (currentRoute == AppRoutes.POMODORO)
             ) { isActive->
                 if(isActive){
-                    TimerIconFocused(onTimerClick = {currentScreen = AppScreen.TIMER})
+                    TimerIconFocused()
                 }else{
-                    TimerIconDefault()
+                    TimerIconDefault(onTimerClick = {navController.navigate(AppRoutes.POMODORO){
+                        popUpTo(navController.graph.startDestinationId) {
+                            saveState = true
+                        }
+
+                        // RULE 2: No Clones
+                        launchSingleTop = true
+
+                        // RULE 3: Remember My Place
+                        restoreState = true
+                    } })
                 }
 
             }
@@ -81,7 +109,7 @@ fun MainBottomBar(
 
 @Preview
 @Composable
-fun TaskIconFocused(modifier:Modifier = Modifier, onTaskClick:()->Unit) {
+fun TaskIconFocused(modifier:Modifier = Modifier) {
 
     Box(
         modifier
@@ -89,11 +117,6 @@ fun TaskIconFocused(modifier:Modifier = Modifier, onTaskClick:()->Unit) {
             .clip(shape = RectangleShape)
             .background(Color.Black)
             .aspectRatio(1f)
-            .clickable(
-                onClick = {
-                    onTaskClick()
-                }
-            )
     ) {
         Box(
 
@@ -129,18 +152,15 @@ fun TaskIconFocused(modifier:Modifier = Modifier, onTaskClick:()->Unit) {
 }
 
 @Composable
-fun TimerIconFocused(modifier: Modifier = Modifier, onTimerClick:()->Unit) {
+fun TimerIconFocused(modifier: Modifier = Modifier) {
 
     Box(
         modifier = modifier
             .height(80.dp)
+            .clip(shape = RectangleShape)
             .aspectRatio(1f) //helps in making the square shape
             .background(Color.Black)
-            .clickable(
-                onClick = {
-                    onTimerClick()
-                }
-            )
+            
     ) {
         Box(
             modifier = Modifier
@@ -172,12 +192,18 @@ fun TimerIconFocused(modifier: Modifier = Modifier, onTimerClick:()->Unit) {
 }
 
 @Composable
-fun TimerIconDefault(modifier: Modifier = Modifier){
+fun TimerIconDefault(modifier: Modifier = Modifier,onTimerClick:()->Unit){
     Box(
         modifier = modifier
             .height(80.dp)
             .aspectRatio(1f)
             .background(color = Color(0xFFF2C300))
+            .clickable(
+                onClick = {
+                    onTimerClick()
+                }
+            )
+        ,contentAlignment = Alignment.Center
     ){
         Column(horizontalAlignment = Alignment.CenterHorizontally){
             Icon(
@@ -200,12 +226,18 @@ fun TimerIconDefault(modifier: Modifier = Modifier){
 }
 
 @Composable
-fun TaskIconDefault(modifier: Modifier = Modifier){
+fun TaskIconDefault(modifier: Modifier = Modifier, onTaskClick:()->Unit){
     Box(
         modifier = modifier
             .height(80.dp)
             .aspectRatio(1f)
             .background(color = Color(0xFFF2C300))
+            .clickable(
+                onClick = {
+                    onTaskClick()
+                }
+            ),
+        contentAlignment = Alignment.Center
     ){
         Column(horizontalAlignment = Alignment.CenterHorizontally){
             Icon(

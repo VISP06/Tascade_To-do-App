@@ -15,7 +15,7 @@ fun TascadeApp() {
     //Navigation Instantiation
     val navController = rememberNavController()
     Scaffold(
-        bottomBar = {MainBottomBar()}
+        bottomBar = {MainBottomBar(navController = navController)}
 
     ) {
         innerPadding->
