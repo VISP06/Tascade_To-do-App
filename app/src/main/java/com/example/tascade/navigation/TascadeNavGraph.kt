@@ -37,7 +37,7 @@ fun TascadeNavGraph(
             //Database Instantiation
             val databaseObject = TodoDatabase.getDatabase(context = LocalContext.current)
             //ViewModel Instantiation
-            val vm = remember { TodoViewModel(repository = OfflineTodoRepository(todoDao = databaseObject.todoDao()))}
+            val vm = remember { TodoViewModel(repository = OfflineTodoRepository(todoDao = databaseObject.todoDao())) }
             val tasks by vm.todos.collectAsState()
             TodoScreen(
                 tasks = tasks,
