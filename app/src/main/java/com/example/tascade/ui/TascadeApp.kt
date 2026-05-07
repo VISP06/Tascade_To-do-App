@@ -3,9 +3,11 @@ package com.example.tascade.ui
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
+import com.example.tascade.PomodoroViewModel
 import com.example.tascade.navigation.TascadeNavGraph
 import com.example.tascade.ui.components.MainBottomBar
 import com.example.tascade.ui.theme.TascadeTheme
@@ -19,7 +21,8 @@ fun TascadeApp() {
 
     ) {
         innerPadding->
-        TascadeNavGraph(navController = navController, innerPadding = innerPadding)
+        val pvm = remember { PomodoroViewModel() }
+        TascadeNavGraph(navController = navController, innerPadding = innerPadding, pomodoroViewModel = pvm)
     }
 }
 

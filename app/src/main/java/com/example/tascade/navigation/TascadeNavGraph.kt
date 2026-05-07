@@ -10,6 +10,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.tascade.PomodoroViewModel
 import com.example.tascade.TodoViewModel
 import com.example.tascade.data.OfflineTodoRepository
 import com.example.tascade.data.TodoDatabase
@@ -23,7 +24,8 @@ import com.example.tascade.ui.list.TodoScreen
 fun TascadeNavGraph(
     navController: NavHostController,
     innerPadding: PaddingValues,
-    modifier:Modifier = Modifier
+    modifier:Modifier = Modifier,
+    pomodoroViewModel: PomodoroViewModel
 ){
     NavHost(
         navController = navController,
@@ -46,7 +48,7 @@ fun TascadeNavGraph(
             )
         }
         composable(route = POMODORO){
-            PomodoroScreen(globalPadding = innerPadding)
+            PomodoroScreen(globalPadding = innerPadding, pomodoroViewModel = pomodoroViewModel)
         }
     }
 }
