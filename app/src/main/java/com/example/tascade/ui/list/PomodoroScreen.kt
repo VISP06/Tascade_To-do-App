@@ -1,9 +1,12 @@
 package com.example.tascade.ui.list
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,6 +30,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tascade.PomodoroViewModel
@@ -75,7 +80,10 @@ fun PomodoroScreen(globalPadding: PaddingValues, modifier:Modifier = Modifier, p
 
 
 @Composable
-fun StartButton(modifier:Modifier = Modifier, pomodoroViewModel: PomodoroViewModel){
+fun StartButton(
+    modifier:Modifier = Modifier,
+    pomodoroViewModel: PomodoroViewModel
+){
     Box(
         modifier = modifier
             .height(80.dp)
@@ -111,7 +119,10 @@ fun StartButton(modifier:Modifier = Modifier, pomodoroViewModel: PomodoroViewMod
 }
 
 @Composable
-fun PauseButton(modifier: Modifier = Modifier, pomodoroViewModel: PomodoroViewModel){
+fun PauseButton(
+    modifier: Modifier = Modifier,
+    pomodoroViewModel: PomodoroViewModel
+){
     Box(
         modifier = modifier
             .height(80.dp)
@@ -147,7 +158,15 @@ fun PauseButton(modifier: Modifier = Modifier, pomodoroViewModel: PomodoroViewMo
 }
 
 @Composable
-fun ResetButton(modifier:Modifier = Modifier, pomodoroViewModel: PomodoroViewModel){
+fun ResetButton(
+    modifier:Modifier = Modifier,
+    pomodoroViewModel: PomodoroViewModel
+){
+    var interactionSource = remember { MutableInteractionSource() }
+    val isTapped by interactionSource.collectIsPressedAsState()
+    val pressAnimationScale by animateDpAsState(
+        targetValue = if(isTapped) 0.dp else -4.dp
+    )
     Box(
         modifier = modifier
             .height(80.dp)
@@ -157,13 +176,14 @@ fun ResetButton(modifier:Modifier = Modifier, pomodoroViewModel: PomodoroViewMod
             .clickable(
                 onClick = {
                     pomodoroViewModel.resetTimer()
-                }
+                },
+                interactionSource = interactionSource
             )
     ){
         Box(
             modifier
                 .height(80.dp)
-                .offset(x = (-4).dp, y = (-4).dp)
+                .offset(x = pressAnimationScale, y = pressAnimationScale)
                 .background(color = Color.White)
                 .border(color = Color.Black, shape = RectangleShape, width = 2.dp)
                 .fillMaxWidth(),
