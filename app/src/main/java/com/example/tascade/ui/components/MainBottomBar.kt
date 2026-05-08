@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -172,7 +173,7 @@ fun TimerIconFocused(modifier: Modifier = Modifier) {
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Icon(
-                    imageVector = Icons.Default.Star,
+                    imageVector = Icons.Default.Timer,
                     contentDescription = null,
                     tint = Color.White,
                     modifier = Modifier.size(28.dp)
@@ -207,7 +208,7 @@ fun TimerIconDefault(modifier: Modifier = Modifier,onTimerClick:()->Unit){
     ){
         Column(horizontalAlignment = Alignment.CenterHorizontally){
             Icon(
-                imageVector = Icons.Default.Star,
+                imageVector = Icons.Default.Timer,
                 contentDescription = null,
                 modifier = Modifier.size(24.dp),
                 tint = Color.Black
