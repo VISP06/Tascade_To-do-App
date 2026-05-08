@@ -57,8 +57,8 @@ fun PomodoroScreen(globalPadding: PaddingValues, modifier:Modifier = Modifier, p
             )
             AnimatedContent(
                 targetState = isCounting.value
-            ) { isActive ->
-                if(isActive){
+            ) { isActive -> //"extremely smart" solution of just adding ! to the isActive in if condition helps my app to work as intended
+                if(!isActive){
                     StartButton(pomodoroViewModel = pomodoroViewModel)
                 }else{
                     PauseButton(pomodoroViewModel = pomodoroViewModel)
