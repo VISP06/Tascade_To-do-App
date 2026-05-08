@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -37,13 +38,18 @@ import com.example.tascade.PomodoroViewModel
 import com.example.tascade.ui.theme.BebasNeue
 import com.example.tascade.util.halftoneBackground
 
+//helper method to convert raw time (eg. 1500) into proper formatted strings (eg. 25:00)
 fun formatTimeString(time:Int):String{
     val timeInMinutes = time / 60
     val timeInSeconds = time % 60
     return String.format("%02d : %02d", timeInMinutes, timeInSeconds)
 }
 @Composable
-fun PomodoroScreen(globalPadding: PaddingValues, modifier:Modifier = Modifier, pomodoroViewModel: PomodoroViewModel) {
+fun PomodoroScreen(
+    globalPadding: PaddingValues,
+    modifier:Modifier = Modifier,
+    pomodoroViewModel: PomodoroViewModel
+) {
     val time by pomodoroViewModel.timerValue.collectAsState()
     var timeString = formatTimeString(time)
     val isCounting = pomodoroViewModel.isRunning.collectAsState()
@@ -57,6 +63,16 @@ fun PomodoroScreen(globalPadding: PaddingValues, modifier:Modifier = Modifier, p
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally){
             PomodoroBoard(timeString = timeString)
+            Spacer(
+                modifier = modifier.padding(12.dp)
+            )
+            Row(){
+                WorkTimeAdjuster()
+                Spacer(
+                    modifier = modifier.padding(12.dp)
+                )
+                BreakTimeAdjuster()
+            }
             Spacer(
                 modifier = modifier.padding(12.dp)
             )
@@ -203,7 +219,6 @@ fun ResetButton(
     }
 }
 
-@Preview
 @Composable
 fun PomodoroBoard(modifier:Modifier = Modifier, timeString:String){
     Box(
@@ -234,4 +249,61 @@ fun PomodoroBoard(modifier:Modifier = Modifier, timeString:String){
             )
         }
     }
+}
+
+@Preview
+@Composable
+fun WorkTimeAdjuster(modifier:Modifier = Modifier){
+    Box(
+        modifier = modifier
+            .height(80.dp)
+            .aspectRatio(2f)
+            .background(color = Color.Black)
+            .fillMaxWidth(0.9f)
+    ) {
+        Box(
+            modifier
+                .height(80.dp)
+                .offset(x = (-4).dp, y = (-4).dp)
+                .background(color = Color.White)
+                .border(color = Color.Black, shape = RectangleShape, width = 2.dp)
+                .fillMaxWidth(),
+            contentAlignment = Alignment.Center
+        ) {
+
+        }
+    }
+}
+
+@Composable
+fun BreakTimeAdjuster(modifier:Modifier = Modifier){
+    Box(
+        modifier = modifier
+            .height(80.dp)
+            .aspectRatio(2f)
+            .background(color = Color.Black)
+            .fillMaxWidth(0.9f)
+    ) {
+        Box(
+            modifier
+                .height(80.dp)
+                .offset(x = (-4).dp, y = (-4).dp)
+                .background(color = Color.White)
+                .border(color = Color.Black, shape = RectangleShape, width = 2.dp)
+                .fillMaxWidth(),
+            contentAlignment = Alignment.Center
+        ) {
+
+        }
+    }
+}
+
+@Composable
+fun IncrementButton(){
+
+}
+
+@Composable
+fun DecrementButton(){
+
 }
