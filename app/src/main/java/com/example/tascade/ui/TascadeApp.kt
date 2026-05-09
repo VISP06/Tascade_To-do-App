@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.example.tascade.PomodoroViewModel
 import com.example.tascade.navigation.TascadeNavGraph
@@ -21,7 +22,7 @@ fun TascadeApp() {
 
     ) {
         innerPadding->
-        val pvm = remember { PomodoroViewModel() }
+        val pvm: PomodoroViewModel = viewModel()
         TascadeNavGraph(navController = navController, innerPadding = innerPadding, pomodoroViewModel = pvm)
     }
 }

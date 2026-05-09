@@ -39,22 +39,32 @@ class PomodoroViewModel : ViewModel() {
     }
 
     fun startTimer() {
+        if (_isRunning.value) return
+
         viewModelScope.launch {
             _isRunning.value = true
 
-            while (_isRunning.value && _timerValue.value > 0) {
-                delay(1000L)
-                _timerValue.value -= 1
-            }
-            if (_timerValue.value == 0) {
-                _isWorkSession.value = !_isWorkSession.value
-                resetTimer()
+            while (_isRunning.value) {
+
+                if (_timerValue.value > 0) {
+                    delay(1000L)
+                    _timerValue.value -= 1
+                } else {
+                    if (_isWorkSession.value) {
+                        _isWorkSession.value = false
+                        _timerValue.value = _breakDuration.value
+
+                    } else {
+                        _isRunning.value = false
+                        _isWorkSession.value = true
+                        _timerValue.value = _workDuration.value
+                    }
+                }
             }
         }
     }
-
     fun increaseWorkTime() {
-        if (_workDuration.value <= 3000) {
+        if (_workDuration.value < 3000) {
             _workDuration.value += 60
         }
     }
@@ -66,7 +76,7 @@ class PomodoroViewModel : ViewModel() {
     }
 
     fun increaseBreakTime(){
-        if(_breakDuration.value<=900){
+        if(_breakDuration.value<900){
             _breakDuration.value += 60
         }
     }
