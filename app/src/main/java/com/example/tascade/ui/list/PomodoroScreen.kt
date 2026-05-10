@@ -77,15 +77,15 @@ fun PomodoroScreen(
                 TimeAdjusterBlock(
                     boxName = "WORK",
                     timeValue = workTime,
-                    decrementButton = { WorkDecrementButton(pomodoroViewModel = pomodoroViewModel) },
-                    incrementButton = { WorkIncrementButton(pomodoroViewModel = pomodoroViewModel) }
+                    decrementButton = { DecrementButton(onClick = { pomodoroViewModel.decreaseWorkTime() }) },
+                    incrementButton = { IncrementButton(onClick = { pomodoroViewModel.increaseWorkTime() }) }
                 )
 
                 TimeAdjusterBlock(
                     boxName = "BREAK",
                     timeValue = breakTime,
-                    decrementButton = { BreakDecrementButton(pomodoroViewModel = pomodoroViewModel) },
-                    incrementButton = { BreakIncrementButton(pomodoroViewModel = pomodoroViewModel) }
+                    decrementButton = { DecrementButton(onClick = { pomodoroViewModel.decreaseBreakTime() }) },
+                    incrementButton = { IncrementButton(onClick = { pomodoroViewModel.increaseBreakTime() }) }
                 )
             }
             Spacer(
@@ -342,7 +342,10 @@ fun TimeAdjusterBlock(
 }
 
 @Composable
-fun WorkIncrementButton(modifier:Modifier = Modifier, pomodoroViewModel: PomodoroViewModel){
+fun IncrementButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+){
     Box(
         modifier = modifier
             .height(40.dp)
@@ -358,17 +361,14 @@ fun WorkIncrementButton(modifier:Modifier = Modifier, pomodoroViewModel: Pomodor
                 .border(color = Color.Black, shape = RectangleShape, width = 2.dp)
                 .fillMaxWidth()
                 .clickable(
-                    onClick = {
-                        pomodoroViewModel.increaseWorkTime()
-                    }
+                    onClick = onClick
                 ),
             contentAlignment = Alignment.Center
         ) {
             Icon(
                 Icons.Filled.Add,
                 contentDescription = null,
-                modifier = Modifier
-                    .size(25.dp),
+                modifier = Modifier.size(25.dp),
                 tint = Color.Black
             )
         }
@@ -376,7 +376,10 @@ fun WorkIncrementButton(modifier:Modifier = Modifier, pomodoroViewModel: Pomodor
 }
 
 @Composable
-fun WorkDecrementButton(modifier:Modifier = Modifier, pomodoroViewModel: PomodoroViewModel){
+fun DecrementButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+){
     Box(
         modifier = modifier
             .height(40.dp)
@@ -392,85 +395,14 @@ fun WorkDecrementButton(modifier:Modifier = Modifier, pomodoroViewModel: Pomodor
                 .border(color = Color.Black, shape = RectangleShape, width = 2.dp)
                 .fillMaxWidth()
                 .clickable(
-                    onClick = {
-                        pomodoroViewModel.decreaseWorkTime()
-                    }
+                    onClick = onClick
                 ),
             contentAlignment = Alignment.Center
         ) {
             Icon(
                 imageVector = Icons.Default.Remove,
                 contentDescription = null,
-                modifier = Modifier
-                    .size(25.dp),
-                tint = Color.Black
-            )
-        }
-    }
-}
-
-@Composable
-fun BreakIncrementButton(modifier:Modifier = Modifier, pomodoroViewModel: PomodoroViewModel){
-    Box(
-        modifier = modifier
-            .height(40.dp)
-            .aspectRatio(1f)
-            .background(color = Color.Black)
-            .fillMaxWidth(0.9f)
-    ) {
-        Box(
-            modifier
-                .height(40.dp)
-                .offset(x = (-4).dp, y = (-4).dp)
-                .background(color = Color.White)
-                .border(color = Color.Black, shape = RectangleShape, width = 2.dp)
-                .fillMaxWidth()
-                .clickable(
-                    onClick = {
-                        pomodoroViewModel.increaseBreakTime()
-                    }
-                ),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                Icons.Filled.Add,
-                contentDescription = null,
-                modifier = Modifier
-                    .size(25.dp),
-                tint = Color.Black
-            )
-        }
-    }
-}
-
-@Composable
-fun BreakDecrementButton(modifier:Modifier = Modifier, pomodoroViewModel: PomodoroViewModel){
-    Box(
-        modifier = modifier
-            .height(40.dp)
-            .aspectRatio(1f)
-            .background(color = Color.Black)
-            .fillMaxWidth(0.9f)
-    ) {
-        Box(
-            modifier
-                .height(40.dp)
-                .offset(x = (-4).dp, y = (-4).dp)
-                .background(color = Color.White)
-                .border(color = Color.Black, shape = RectangleShape, width = 2.dp)
-                .fillMaxWidth()
-                .clickable(
-                    onClick = {
-                        pomodoroViewModel.decreaseBreakTime()
-                    }
-                ),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                imageVector = Icons.Default.Remove,
-                contentDescription = null,
-                modifier = Modifier
-                    .size(25.dp),
+                modifier = Modifier.size(25.dp),
                 tint = Color.Black
             )
         }
