@@ -1,5 +1,6 @@
 package com.example.tascade.ui.list
 
+import android.media.SoundPool
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
@@ -27,6 +28,7 @@ import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -34,12 +36,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tascade.PomodoroViewModel
+import com.example.tascade.R
 import com.example.tascade.ui.theme.BebasNeue
 import com.example.tascade.util.halftoneBackground
 
@@ -60,6 +64,21 @@ fun PomodoroScreen(
     val breakTime by pomodoroViewModel.breakDuration.collectAsState()
 
     val timeString = formatTimeString(time)
+
+    val context = LocalContext.current
+    val soundPool = remember {
+        SoundPool.Builder()
+            .setMaxStreams(5)
+            .build()
+    }
+    val alarmSoundId = remember {
+        soundPool.load(context, R.raw.pomodoro_alarm, 1)
+    }
+
+    LaunchedEffect(time) {
+        if(time == 0)
+            soundPool.play(alarmSoundId, 1f, 1f, 1, 5, 1f)
+    }
     Box(
         modifier = Modifier
             .fillMaxSize()

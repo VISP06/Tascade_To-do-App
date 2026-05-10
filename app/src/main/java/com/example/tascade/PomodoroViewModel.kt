@@ -1,5 +1,8 @@
 package com.example.tascade
 
+import android.media.SoundPool
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
@@ -34,7 +37,7 @@ class PomodoroViewModel : ViewModel() {
         _timerValue.value = _workDuration.value
         _isWorkSession.value = true
     }
-
+//reset button wouldn't reset properly back to 25 min for ex because of co-routines and delay func
     fun startTimer() {
         if (_isRunning.value) return
 
@@ -45,7 +48,9 @@ class PomodoroViewModel : ViewModel() {
 
                 if (_timerValue.value > 0) {
                     delay(1000L)
-                    _timerValue.value -= 1
+                    if (_isRunning.value) {
+                        _timerValue.value -= 1
+                    }
                 } else {
                     if (_isWorkSession.value) {
                         _isWorkSession.value = false
