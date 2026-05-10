@@ -77,7 +77,7 @@ fun PomodoroScreen(
 
     LaunchedEffect(time) {
         if(time == 0)
-            soundPool.play(alarmSoundId, 1f, 1f, 1, 5, 1f)
+            soundPool.play(alarmSoundId, 1f, 1f, 1, 0, 1f)
     }
     Box(
         modifier = Modifier

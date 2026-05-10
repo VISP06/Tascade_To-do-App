@@ -52,6 +52,7 @@ class PomodoroViewModel : ViewModel() {
                         _timerValue.value -= 1
                     }
                 } else {
+                    delay(1000L)
                     if (_isWorkSession.value) {
                         _isWorkSession.value = false
                         _timerValue.value = _breakDuration.value
