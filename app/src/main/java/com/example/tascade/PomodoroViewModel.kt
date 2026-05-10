@@ -31,11 +31,8 @@ class PomodoroViewModel : ViewModel() {
 
     fun resetTimer() {
         _isRunning.value = false
-        if (_isWorkSession.value) {
-            _timerValue.value = _workDuration.value
-        } else {
-            _timerValue.value = _breakDuration.value
-        }
+        _timerValue.value = _workDuration.value
+        _isWorkSession.value = true
     }
 
     fun startTimer() {

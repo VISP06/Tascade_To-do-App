@@ -35,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -68,18 +69,20 @@ fun PomodoroScreen(
         contentAlignment = Alignment.Center
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally){
-            PomodoroBoard(timeString = timeString)
+            PomodoroBoard(timeString = timeString, pomodoroViewModel = pomodoroViewModel)
             Spacer(
                 modifier = modifier.padding(12.dp)
             )
             Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                 TimeAdjusterBlock(
+                    boxName = "WORK",
                     timeValue = workTime,
                     decrementButton = { WorkDecrementButton(pomodoroViewModel = pomodoroViewModel) },
                     incrementButton = { WorkIncrementButton(pomodoroViewModel = pomodoroViewModel) }
                 )
 
                 TimeAdjusterBlock(
+                    boxName = "BREAK",
                     timeValue = breakTime,
                     decrementButton = { BreakDecrementButton(pomodoroViewModel = pomodoroViewModel) },
                     incrementButton = { BreakIncrementButton(pomodoroViewModel = pomodoroViewModel) }
@@ -231,7 +234,7 @@ fun ResetButton(
 }
 
 @Composable
-fun PomodoroBoard(modifier:Modifier = Modifier, timeString:String){
+fun PomodoroBoard(modifier:Modifier = Modifier, timeString:String, pomodoroViewModel: PomodoroViewModel){
     Box(
         modifier = modifier
             .height(250.dp)
@@ -249,20 +252,35 @@ fun PomodoroBoard(modifier:Modifier = Modifier, timeString:String){
             contentAlignment = Alignment.Center
 
         ){
-            Text(
-                text = timeString,
-                color = Color.Black,
-                style = TextStyle(
-                    fontSize = 100.sp,
-                    fontWeight = FontWeight.Bold,
-                    fontFamily = BebasNeue
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = if(pomodoroViewModel.isWorkSession.collectAsState().value) "Work Session" else "Break Time",
+                    color = Color(0xFF7B1FA2),
+                    style = TextStyle(
+                        fontSize = 24.sp,
+                        fontFamily = BebasNeue,
+                        fontWeight = FontWeight.Bold,
+                        letterSpacing = 2.sp
+                    )
                 )
-            )
+                Text(
+                    text = timeString,
+                    color = Color.Black,
+                    style = TextStyle(
+                        fontSize = 100.sp,
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = BebasNeue
+                    )
+                )
+            }
         }
     }
 }
 @Composable
 fun TimeAdjusterBlock(
+    boxName:String,
     timeValue: Int,
     decrementButton: @Composable () -> Unit,
     incrementButton: @Composable () -> Unit
@@ -292,17 +310,29 @@ fun TimeAdjusterBlock(
                 decrementButton()
 
                 Spacer(modifier = Modifier.width(16.dp))
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
 
-                Text(
-                    text = timeString,
-                    color = Color.Black,
-                    style = TextStyle(
-                        fontSize = 24.sp,
-                        fontFamily = BebasNeue,
-                        fontWeight = FontWeight.Bold
+                    Text(
+                        text = boxName,
+                        color = Color.Black,
+                        style = TextStyle(
+                            fontSize = 16.sp,
+                            fontFamily = BebasNeue,
+                            fontWeight = FontWeight.Thin
+                        )
                     )
-                )
-
+                    Text(
+                        text = timeString,
+                        color = Color.Black,
+                        style = TextStyle(
+                            fontSize = 24.sp,
+                            fontFamily = BebasNeue,
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
+                }
                 Spacer(modifier = Modifier.width(16.dp))
 
                 incrementButton()
