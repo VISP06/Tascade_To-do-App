@@ -26,6 +26,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -51,6 +52,7 @@ import com.example.tascade.ui.pomodoro.components.ResetButton
 import com.example.tascade.ui.pomodoro.components.StartButton
 import com.example.tascade.ui.pomodoro.components.TimeAdjusterBlock
 import com.example.tascade.ui.theme.BebasNeue
+import com.example.tascade.ui.todo.components.TodoTopBar
 import com.example.tascade.util.formatTimeString
 import com.example.tascade.util.halftoneBackground
 
@@ -80,51 +82,55 @@ fun PomodoroScreen(
         if(time == 0)
             soundPool.play(alarmSoundId, 1f, 1f, 1, 0, 1f)
     }
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(globalPadding)
-            .background(Color(0xFFFACC15))
-            .halftoneBackground(),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally){
-            PomodoroBoard(timeString = timeString, pomodoroViewModel = pomodoroViewModel)
-            Spacer(
-                modifier = modifier.padding(12.dp)
-            )
-            Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                TimeAdjusterBlock(
-                    boxName = "WORK",
-                    timeValue = workTime,
-                    decrementButton = { DecrementButton(onClick = { pomodoroViewModel.decreaseWorkTime() }) },
-                    incrementButton = { IncrementButton(onClick = { pomodoroViewModel.increaseWorkTime() }) }
+    Scaffold(
+        topBar = {TodoTopBar(topBarHeadingId = R.string.top_bar_title2)}
+    ) { innerPadding ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .background(Color(0xFFFACC15))
+                .halftoneBackground(),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = modifier.align(Alignment.TopCenter).padding(24.dp)) {
+                PomodoroBoard(timeString = timeString, pomodoroViewModel = pomodoroViewModel)
+                Spacer(
+                    modifier = modifier.padding(12.dp)
                 )
+                Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                    TimeAdjusterBlock(
+                        boxName = "WORK",
+                        timeValue = workTime,
+                        decrementButton = { DecrementButton(onClick = { pomodoroViewModel.decreaseWorkTime() }) },
+                        incrementButton = { IncrementButton(onClick = { pomodoroViewModel.increaseWorkTime() }) }
+                    )
 
-                TimeAdjusterBlock(
-                    boxName = "BREAK",
-                    timeValue = breakTime,
-                    decrementButton = { DecrementButton(onClick = { pomodoroViewModel.decreaseBreakTime() }) },
-                    incrementButton = { IncrementButton(onClick = { pomodoroViewModel.increaseBreakTime() }) }
-                )
-            }
-            Spacer(
-                modifier = modifier.padding(12.dp)
-            )
-            AnimatedContent(
-                targetState = pomodoroViewModel.isRunning.collectAsState().value
-            ) { isActive -> //"extremely smart" solution of just adding ! to the isActive in if condition helps my app to work as intended
-                if(!isActive){
-                    StartButton(pomodoroViewModel = pomodoroViewModel)
-                }else{
-                    PauseButton(pomodoroViewModel = pomodoroViewModel)
+                    TimeAdjusterBlock(
+                        boxName = "BREAK",
+                        timeValue = breakTime,
+                        decrementButton = { DecrementButton(onClick = { pomodoroViewModel.decreaseBreakTime() }) },
+                        incrementButton = { IncrementButton(onClick = { pomodoroViewModel.increaseBreakTime() }) }
+                    )
                 }
-            }
+                Spacer(
+                    modifier = modifier.padding(12.dp)
+                )
+                AnimatedContent(
+                    targetState = pomodoroViewModel.isRunning.collectAsState().value
+                ) { isActive -> //"extremely smart" solution of just adding ! to the isActive in if condition helps my app to work as intended
+                    if (!isActive) {
+                        StartButton(pomodoroViewModel = pomodoroViewModel)
+                    } else {
+                        PauseButton(pomodoroViewModel = pomodoroViewModel)
+                    }
+                }
 
-            Spacer(
-                modifier = modifier.padding(12.dp)
-            )
-            ResetButton(pomodoroViewModel = pomodoroViewModel)
+                Spacer(
+                    modifier = modifier.padding(12.dp)
+                )
+                ResetButton(pomodoroViewModel = pomodoroViewModel)
+            }
         }
     }
 }

@@ -1,8 +1,11 @@
 package com.example.tascade.ui.pomodoro.components
 
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,6 +17,8 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,6 +31,11 @@ fun IncrementButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ){
+    var interactionSource = remember { MutableInteractionSource() }
+    val isTapped by interactionSource.collectIsPressedAsState()
+    val pressAnimationScale by animateDpAsState(
+        targetValue = if(isTapped) 0.dp else -4.dp
+    )
     Box(
         modifier = modifier
             .height(40.dp)
@@ -36,12 +46,14 @@ fun IncrementButton(
         Box(
             modifier
                 .height(40.dp)
-                .offset(x = (-4).dp, y = (-4).dp)
+                .offset(x = pressAnimationScale, y = pressAnimationScale)
                 .background(color = Color.White)
                 .border(color = Color.Black, shape = RectangleShape, width = 2.dp)
                 .fillMaxWidth()
                 .clickable(
-                    onClick = onClick
+                    onClick = onClick,
+                    interactionSource = interactionSource,
+                    indication = null
                 ),
             contentAlignment = Alignment.Center
         ) {
@@ -60,6 +72,11 @@ fun DecrementButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ){
+    var interactionSource = remember { MutableInteractionSource() }
+    val isTapped by interactionSource.collectIsPressedAsState()
+    val pressAnimationScale by animateDpAsState(
+        targetValue = if(isTapped) 0.dp else -4.dp
+    )
     Box(
         modifier = modifier
             .height(40.dp)
@@ -70,12 +87,14 @@ fun DecrementButton(
         Box(
             modifier
                 .height(40.dp)
-                .offset(x = (-4).dp, y = (-4).dp)
+                .offset(x = pressAnimationScale, y = pressAnimationScale)
                 .background(color = Color.White)
                 .border(color = Color.Black, shape = RectangleShape, width = 2.dp)
                 .fillMaxWidth()
                 .clickable(
-                    onClick = onClick
+                    onClick = onClick,
+                    interactionSource = interactionSource,
+                    indication = null
                 ),
             contentAlignment = Alignment.Center
         ) {
