@@ -16,9 +16,8 @@ import com.example.tascade.data.OfflineTodoRepository
 import com.example.tascade.data.TodoDatabase
 import com.example.tascade.navigation.AppRoutes.POMODORO
 import com.example.tascade.navigation.AppRoutes.TASKS
-import com.example.tascade.ui.list.PomodoroScreen
-import com.example.tascade.ui.list.TodoList
-import com.example.tascade.ui.list.TodoScreen
+import com.example.tascade.ui.pomodoro.PomodoroScreen
+import com.example.tascade.ui.todo.TodoScreen
 
 @Composable
 fun TascadeNavGraph(

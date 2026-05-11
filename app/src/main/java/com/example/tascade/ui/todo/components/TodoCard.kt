@@ -1,4 +1,4 @@
-package com.example.tascade.ui.components
+package com.example.tascade.ui.todo.components
 
 
 import androidx.compose.animation.core.animateDpAsState

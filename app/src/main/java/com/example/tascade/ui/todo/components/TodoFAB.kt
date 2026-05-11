@@ -1,10 +1,9 @@
-package com.example.tascade.ui.components
+package com.example.tascade.ui.todo.components
 
 import android.media.SoundPool
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import com.example.tascade.R
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Box

@@ -1,4 +1,4 @@
-package com.example.tascade.ui.list
+package com.example.tascade.ui.todo
 
 import android.media.SoundPool
 import androidx.compose.foundation.Image
@@ -33,9 +33,9 @@ import androidx.compose.ui.unit.dp
 import com.example.tascade.R
 import com.example.tascade.TodoViewModel
 import com.example.tascade.model.Todo
-import com.example.tascade.ui.components.TodoCard
-import com.example.tascade.ui.components.TodoFAB
-import com.example.tascade.ui.components.TodoTopBar
+import com.example.tascade.ui.todo.components.TodoCard
+import com.example.tascade.ui.todo.components.TodoFAB
+import com.example.tascade.ui.todo.components.TodoTopBar
 import com.example.tascade.util.halftoneBackground
 
 @Composable

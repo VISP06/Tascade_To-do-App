@@ -1,10 +1,7 @@
 package com.example.tascade.ui
 
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
@@ -19,7 +16,6 @@ fun TascadeApp() {
     val navController = rememberNavController()
     Scaffold(
         bottomBar = {MainBottomBar(navController = navController)}
-
     ) {
         innerPadding->
         val pvm: PomodoroViewModel = viewModel()
