@@ -6,6 +6,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Compress
 import androidx.compose.material.icons.filled.Expand
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -25,20 +26,69 @@ import com.example.tascade.ui.theme.BebasNeue
 
 @Composable
 fun FullScreenMode(
-    timeString:String,
+    timeString: String,
     pomodoroViewModel: PomodoroViewModel,
-    modifier:Modifier = Modifier,
+    modifier: Modifier = Modifier,
     onExpand: () -> Unit
-){
-    val sessionText = if (pomodoroViewModel.isWorkSession.collectAsState().value) "Work Session" else "Break Time"
+) {
+    val isWorkSession by pomodoroViewModel.isWorkSession.collectAsState()
+
     Box(
-        modifier = modifier.fillMaxSize().background(color = Color.White)
-    ){
+        modifier = modifier
+            .fillMaxSize()
+            .background(Color.White)
+            .padding(24.dp),
+        contentAlignment = Alignment.Center
+    ) {
+
         Box(
-            modifier = modifier.
-        ){
-            Box(){
-                modifier = modifier.offset(x = (-4).dp, y = (-4).dp)
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = Color.Black)
+        )
+
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .offset(x = (-8).dp, y = (-8).dp)
+                .background(color = Color.White)
+                .border(width = 4.dp, color = Color.Black),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = Icons.Default.Compress,
+                contentDescription = "Exit Fullscreen",
+                tint = Color.Black,
+                modifier = Modifier
+                    .padding(16.dp)
+                    .size(32.dp)
+                    .align(Alignment.TopEnd)
+                    .clickable { onExpand() }
+            )
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = if (isWorkSession) "WORK SESSION" else "BREAK TIME",
+                    color = Color(0xFF7B1FA2),
+                    style = TextStyle(
+                        fontSize = 32.sp,
+                        fontFamily = BebasNeue,
+                        fontWeight = FontWeight.Bold,
+                        letterSpacing = 4.sp
+                    )
+                )
+
+                Text(
+                    text = timeString,
+                    color = Color.Black,
+                    style = TextStyle(
+                        fontSize = 120.sp,
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = BebasNeue
+                    )
+                )
             }
         }
     }
