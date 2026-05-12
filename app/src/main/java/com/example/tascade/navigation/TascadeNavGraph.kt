@@ -24,7 +24,9 @@ fun TascadeNavGraph(
     navController: NavHostController,
     innerPadding: PaddingValues,
     modifier:Modifier = Modifier,
-    pomodoroViewModel: PomodoroViewModel
+    pomodoroViewModel: PomodoroViewModel,
+    isFullScreen: Boolean,
+    onFullScreenToggle: () -> Unit
 ){
     NavHost(
         navController = navController,
@@ -47,7 +49,10 @@ fun TascadeNavGraph(
             )
         }
         composable(route = POMODORO){
-            PomodoroScreen(globalPadding = innerPadding, pomodoroViewModel = pomodoroViewModel)
+            PomodoroScreen(globalPadding = innerPadding, pomodoroViewModel = pomodoroViewModel, isFullScreen = isFullScreen,
+                onFullScreenToggle = onFullScreenToggle)
         }
     }
 }
+
+//remember abt modifier's align function for certain ui components inside bigger ui components, they don't work as intended in certain layouts like rows/columns

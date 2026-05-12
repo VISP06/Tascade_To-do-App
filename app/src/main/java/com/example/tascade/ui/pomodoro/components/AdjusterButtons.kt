@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -24,18 +25,29 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.delay
 
 
 @Composable
 fun IncrementButton(
     modifier: Modifier = Modifier,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+
 ){
     var interactionSource = remember { MutableInteractionSource() }
     val isTapped by interactionSource.collectIsPressedAsState()
     val pressAnimationScale by animateDpAsState(
         targetValue = if(isTapped) 0.dp else -4.dp
     )
+    val isHolding by interactionSource.collectIsPressedAsState()
+    LaunchedEffect(isHolding) {
+        if(isHolding){
+            while(isHolding){
+                delay(100L)
+                onClick()
+            }
+        }
+    }
     Box(
         modifier = modifier
             .height(40.dp)
@@ -77,6 +89,15 @@ fun DecrementButton(
     val pressAnimationScale by animateDpAsState(
         targetValue = if(isTapped) 0.dp else -4.dp
     )
+    val isHolding by interactionSource.collectIsPressedAsState()
+    LaunchedEffect(isHolding) {
+        if(isHolding){
+            while(isHolding){
+                delay(100L)
+                onClick()
+            }
+        }
+    }
     Box(
         modifier = modifier
             .height(40.dp)
