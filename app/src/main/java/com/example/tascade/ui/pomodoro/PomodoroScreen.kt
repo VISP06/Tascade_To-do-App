@@ -57,7 +57,7 @@ fun PomodoroScreen(
     //if user pressed physical back button when in full screen, it has to go back to timer screen and not make bottom bar disappear
     BackHandler(enabled = isFullScreen) {
         onFullScreenToggle()
-    }
+    } //basically what this means is, if we are in full screen mode then we just call that toggle method to take us out of it. that is what the back method will do for that case
     val time by pomodoroViewModel.timerValue.collectAsState()
     val workTime by pomodoroViewModel.workDuration.collectAsState()
     val breakTime by pomodoroViewModel.breakDuration.collectAsState()
