@@ -11,9 +11,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -25,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tascade.R
@@ -57,7 +60,10 @@ fun TodoCard(
             Modifier
                 .offset(x = scale, y = scale)
                 .border(width = 2.dp, color = Color.Black, shape = RoundedCornerShape(8.dp))
-                .background(color = Color.White, shape = RoundedCornerShape(8.dp))
+                .background(
+                    color = if(isCurrentlyChecked) Color.LightGray else Color.White,
+                    shape = RoundedCornerShape(8.dp)
+                )
                 .fillMaxWidth()
                 .padding(vertical = 32.dp, horizontal = 16.dp)
         ) {
@@ -70,7 +76,8 @@ fun TodoCard(
                     text = task.title,
                     color = Color(0xFF1A237E),
                     fontSize = 32.sp,
-                    fontFamily = BebasNeue
+                    fontFamily = BebasNeue,
+                    textDecoration = if(isCurrentlyChecked) TextDecoration.LineThrough else null
                 )
             }
         }
