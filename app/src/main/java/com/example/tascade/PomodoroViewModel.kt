@@ -67,7 +67,7 @@ class PomodoroViewModel : ViewModel() {
         }
     }
     fun increaseWorkTime() {
-        if (_workDuration.value < 3000) {
+        if (_workDuration.value < 6000) {
             _workDuration.value += 60
         }
     }
@@ -79,13 +79,13 @@ class PomodoroViewModel : ViewModel() {
     }
 
     fun increaseBreakTime(){
-        if(_breakDuration.value<900){
+        if(_breakDuration.value<1800){
             _breakDuration.value += 60
         }
     }
 
     fun decreaseBreakTime(){
-        if(_breakDuration.value>300){
+        if(_breakDuration.value>60){
             _breakDuration.value -= 60
         }
     }

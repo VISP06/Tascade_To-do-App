@@ -89,6 +89,7 @@ fun AddTodoDialog(showDialog: Boolean, onDismiss: () -> Unit, modifier: Modifier
                         .weight(1f)
                         .focusRequester(focusRequester)
 
+
                 )
 
                 Spacer(Modifier.weight(0.1f))

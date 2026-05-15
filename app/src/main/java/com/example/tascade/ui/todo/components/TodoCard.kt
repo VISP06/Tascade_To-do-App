@@ -2,6 +2,7 @@ package com.example.tascade.ui.todo.components
 
 
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -26,6 +27,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.TransformOrigin
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
@@ -43,6 +46,10 @@ fun TodoCard(
     isCurrentlyChecked: Boolean,
 
 ) {
+    val strikeProgress by animateFloatAsState(
+        targetValue = if (isCurrentlyChecked) 1f else 0f,
+        label = ""
+    )
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
     val scale by animateDpAsState(
@@ -72,13 +79,33 @@ fun TodoCard(
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 TodoCheckBox(onCheckedChange = onCheckedChange, isCurrentlyChecked = isCurrentlyChecked, interactionSource = interactionSource)
-                Text(
-                    text = task.title,
-                    color = Color(0xFF1A237E),
-                    fontSize = 32.sp,
-                    fontFamily = BebasNeue,
-                    textDecoration = if(isCurrentlyChecked) TextDecoration.LineThrough else null
-                )
+
+                Box {
+                    Text(
+                        text = task.title,
+                        color = Color(0xFF1A237E),
+                        fontSize = 32.sp,
+                        fontFamily = BebasNeue,
+                        maxLines = 1
+                    )
+
+                    Box(
+                        modifier = Modifier
+                            .matchParentSize()
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(2.dp)
+                                .align(Alignment.CenterStart)
+                                .graphicsLayer {
+                                    scaleX = strikeProgress
+                                    transformOrigin = TransformOrigin(0f, 0.5f)
+                                }
+                                .background(Color.Black)
+                        )
+                    }
+                }
             }
         }
     }
